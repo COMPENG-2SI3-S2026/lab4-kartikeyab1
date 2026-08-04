@@ -129,12 +129,23 @@ void objPosBST::printCurrentLevel(const TNode *thisNode, const int level) const
     // Recursive Level-Order Tree-Printing Algorithm
 
     // 1. First check if at leaf node.  If yes, do not print anything
+    if (thisNode == nullptr)
+    {
+        return;
+    }
 
     // 2. Then, check if level is 1.  If yes, print the Prefix field only (specified in manual)
+    if (level == 1)
+    {
+        cout << thisNode->data.getPF() << " ";
+        return;
+    }
 
     // 3. Otherwise, invoke recursively printCurrentLevel for left subtree with one less level, then
     //                                                        right subtree with one less level
     //    "if I'm not at the level, keep on searching into the left and the right subtrees"
+    printCurrentLevel(thisNode->left, level - 1);
+    printCurrentLevel(thisNode->right, level - 1);
 
     // You may add other character formatting features to make the tree more readable.
     // (you will be asked to demo this feature during the lab demo!!)
@@ -292,7 +303,12 @@ bool objPosBST::findGreater(const int numThreshold, const TNode *thisNode) const
 
     // Algorithm Suggestion
     //  1. If tree empty, just return false
+    if (thisNode == nullptr)
+    {
+        return false;
+    }
     //  2. Recursively check if the any number on the LEFT subtree is greater than numThreshold
+    return findGreater(numThreshold, thisNode->left) || findGreater(numThreshold, thisNode->right) || (thisNode->data.getNum() > numThreshold);
     //  3. Recursively check if the any number on the RIGHT subtree is greater than numThreshold
     //  4. Then, check if the number field of the objPos data in the current node is greater than numThreshold
     //  5. If any of the results from item 2, 3, and 4 is TRUE, return true.
