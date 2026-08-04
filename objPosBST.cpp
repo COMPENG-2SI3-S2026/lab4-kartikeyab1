@@ -75,9 +75,15 @@ bool objPosBST::isLeaf(const objPos &thisPos) const
 void objPosBST::printTree(const TNode *thisNode) const // private recursive
 {
     // Print the entire tree content using **In-Order Traversal**
-
+    if (thisNode == nullptr)
+    {
+        return;
+    }
     // print in the format of Prefix + Number
     // e.g.  N30 P25 etc.
+    printTree(thisNode->left);
+    cout << thisNode->data.getPF() << thisNode->data.getNum() << " ";
+    printTree(thisNode->right);
 
     // DO NOT use printObjPos() as it will mess up the game display.
 }
@@ -97,11 +103,25 @@ int objPosBST::getHeight(const TNode *thisNode) const
     // Tree Height Calculation Algorithm
 
     // 1. If thisNode is null, height is zero.
+    if (thisNode == nullptr)
+    {
+        return 0;
+    }
 
     // 2. Otherwise, recursively invoke getHeight for the left and right subtree, and save
     //    the returned heights.
+    int leftHeight = getHeight(thisNode->left);
+    int rightHeight = getHeight(thisNode->right);
 
     // 3. Compare the two returned heights, and return the larger one.
+    if (leftHeight > rightHeight)
+    {
+        return leftHeight + 1; // add 1 for the current node
+    }
+    else
+    {
+        return rightHeight + 1; // add 1 for the current node
+    }
 }
 
 void objPosBST::printCurrentLevel(const TNode *thisNode, const int level) const
