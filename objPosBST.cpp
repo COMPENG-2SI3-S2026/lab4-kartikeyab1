@@ -156,13 +156,22 @@ bool objPosBST::isInTree(const objPos &thisPos, const TNode *thisNode) const
 {
     // Check if thisPos in in the tree.
     //  Remember, tree nodes are inserted using the Prefix member of objPos
-
-    // Algorithm Suggestion:
-    // 1. if the node is NULL, just return false
-    // 2. Otherwise, compare Prefix of the data of the current node
-    //    against the Prefix of thisPos
-    //      - If not equal, follow the BST search rules
-    //      - If equal, return true
+    if (thisNode == nullptr) // 1. if the node is NULL, just return false
+    {
+        return false;
+    }
+    if (thisPos.getPF() < thisNode->data.getPF()) // 2. Otherwise, compare Prefix of the data of the current node against the Prefix of thisPos
+    {
+        return isInTree(thisPos, thisNode->left); // - If not equal, follow the BST search rules
+    }
+    else if (thisPos.getPF() > thisNode->data.getPF())
+    {
+        return isInTree(thisPos, thisNode->right); // - If not equal, follow the BST search rules
+    }
+    else // - If equal, return true
+    {
+        return true;
+    }
 }
 
 // Public Interface, Implemented
@@ -175,6 +184,26 @@ bool objPosBST::isInTree(const objPos &thisPos) const
 void objPosBST::insert(const objPos &thisPos, TNode *&thisNode)
 {
     // Insert objPos as a Node into the BST
+    if (thisNode == nullptr)
+    {
+        thisNode = new TNode(thisPos);
+        return;
+    }
+    if (thisPos.getPF() < thisNode->data.getPF())
+    {
+        insert(thisPos, thisNode->left);
+    }
+    else if (thisPos.getPF() > thisNode->data.getPF())
+    {
+        insert(thisPos, thisNode->right);
+    }
+    else
+    {
+        // If the node is already in the tree (i.e. Prefix match found)
+        // Add the number member of thisPos to the number member of the objPos data at the node
+        int combinedNum = thisNode->data.getNum() + thisPos.getNum();
+        thisNode->data.setNum(combinedNum);
+    }
 
     // Check Lecture Notes for general implementation
     //  Hint: Algorithm similar to isInTree.
