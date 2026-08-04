@@ -239,15 +239,43 @@ const TNode *objPosBST::findMin(const TNode *thisNode) const
 
 void objPosBST::remove(const objPos &thisPos, TNode *&thisNode)
 {
-    // Remove the node with matching prefix of thisPos from the subtree thisNode
+    if (thisNode == nullptr)
+    {
+        return; // Node not found, do nothing
+    }
 
-    // *IMPORTANT* Check Lecture Notes for general implementation
-    //  Remember the three removal case scenarios
-
-    // Case 1 and 2 both can be handled with one algorithm (Lecture Notes)
-
-    // Case 3 - Delete the node with 2 children
-    //   You can use either methods (check lecture notes)
+    if (thisPos.getPF() < thisNode->data.getPF())
+    {
+        remove(thisPos, thisNode->left); // Search in the left subtree
+    }
+    else if (thisPos.getPF() > thisNode->data.getPF())
+    {
+        remove(thisPos, thisNode->right); // Search in the right subtree
+    }
+    else
+    {
+        if (thisNode->left != nullptr && thisNode->right != nullptr)
+        {
+            // CASE 3:Node with two children: Get the inorder successor (smallest in the right subtree)
+            const TNode *successor = findMin(thisNode->right);
+            thisNode->data = successor->data;         // Copy the inorder successor's content to this node
+            remove(successor->data, thisNode->right); // Delete the inorder successor
+        }
+        else
+        {
+            // Node with one child or no child, CASE 1 and CASE 2
+            TNode *temp = thisNode;
+            if (thisNode->left != nullptr)
+            {
+                thisNode = thisNode->left; // Replace with left child
+            }
+            else
+            {
+                thisNode = thisNode->right; // Replace with right child or nullptr
+            }
+            delete temp; // Free memory of the removed node
+        }
+    }
 }
 
 // Public Interface, Implemented
