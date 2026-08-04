@@ -6,18 +6,27 @@ using namespace std;
 objPosBST::objPosBST()
 {
     // Constructor (Check Lecture Notes for Implementation, Simple)
+    root = nullptr;
 }
 
 objPosBST::~objPosBST()
 {
     // Destructor
     // Invoke delete tree, then set root to NULL
+    deleteTree();
+    root = nullptr;
 }
 
 void objPosBST::deleteTree(const TNode* thisNode)
 {
 	// Delete all nodes in the tree
-
+    if (thisNode == nullptr)
+    {
+        return;
+    }
+    deleteTree(thisNode->left);
+    deleteTree(thisNode->right);
+    delete thisNode;
     // Question from Class - Which Traversal Order should you use for this method?
     //   WARNING - using the wrong one will result in potential heap error.
 }
