@@ -17,9 +17,9 @@ objPosBST::~objPosBST()
     root = nullptr;
 }
 
-void objPosBST::deleteTree(const TNode* thisNode)
+void objPosBST::deleteTree(const TNode *thisNode)
 {
-	// Delete all nodes in the tree
+    // Delete all nodes in the tree
     if (thisNode == nullptr)
     {
         return;
@@ -42,22 +42,29 @@ bool objPosBST::isEmptyTree() const
 {
     // Check if tree is empty
     //  Really simple, think about how.
+    return (root == nullptr);
 }
 
-
-bool objPosBST::isLeaf(const objPos &thisPos, const TNode* thisNode) const
+bool objPosBST::isLeaf(const objPos &thisPos, const TNode *thisNode) const
 {
     // Check if thisPos in a Leaf Node.
     //  Remember, tree nodes are inserted using the Prefix member of objPos
-
-    // Algorithm Suggestion:
-    // 1. if the node is NULL, just return false
-    // 2. Otherwise, compare Prefix of the data of the current node
-    //    against the Prefix of thisPos
-    //      - If not equal, follow the BST search rules
-    //      - If equal, check if the node is a leaf node
-
-    // Remember, leaf nodes do not have children nodes
+    if (thisNode == nullptr) // 1. if the node is NULL, just return false
+    {
+        return false;
+    }
+    if (thisPos.getPF() < thisNode->data.getPF()) // 2. Otherwise, compare Prefix of the data of the current node against the Prefix of thisPos
+    {
+        return isLeaf(thisPos, thisNode->left); // - If not equal, follow the BST search rules
+    }
+    else if (thisPos.getPF() > thisNode->data.getPF())
+    {
+        return isLeaf(thisPos, thisNode->right); // - If not equal, follow the BST search rules
+    }
+    else // - If equal, check if the node is a leaf node
+    {
+        return (thisNode->left == nullptr && thisNode->right == nullptr); // leaf nodes do not have children nodes
+    }
 }
 
 bool objPosBST::isLeaf(const objPos &thisPos) const
@@ -65,8 +72,7 @@ bool objPosBST::isLeaf(const objPos &thisPos) const
     return isLeaf(thisPos, root);
 }
 
-
-void objPosBST::printTree(const TNode* thisNode) const  // private recursive
+void objPosBST::printTree(const TNode *thisNode) const // private recursive
 {
     // Print the entire tree content using **In-Order Traversal**
 
@@ -76,9 +82,9 @@ void objPosBST::printTree(const TNode* thisNode) const  // private recursive
     // DO NOT use printObjPos() as it will mess up the game display.
 }
 
-void objPosBST::printTree() const  // public interface
-{    
-    if(root == NULL)
+void objPosBST::printTree() const // public interface
+{
+    if (root == NULL)
     {
         cout << "[Empty]";
         return;
@@ -86,10 +92,9 @@ void objPosBST::printTree() const  // public interface
     printTree(root);
 }
 
-
-int objPosBST::getHeight(const TNode* thisNode) const
+int objPosBST::getHeight(const TNode *thisNode) const
 {
-    // Tree Height Calculation Algorithm 
+    // Tree Height Calculation Algorithm
 
     // 1. If thisNode is null, height is zero.
 
@@ -99,10 +104,10 @@ int objPosBST::getHeight(const TNode* thisNode) const
     // 3. Compare the two returned heights, and return the larger one.
 }
 
-void objPosBST::printCurrentLevel(const TNode* thisNode, const int level) const
+void objPosBST::printCurrentLevel(const TNode *thisNode, const int level) const
 {
-    // Recursive Level-Order Tree-Printing Algorithm 
-    
+    // Recursive Level-Order Tree-Printing Algorithm
+
     // 1. First check if at leaf node.  If yes, do not print anything
 
     // 2. Then, check if level is 1.  If yes, print the Prefix field only (specified in manual)
@@ -118,7 +123,7 @@ void objPosBST::printCurrentLevel(const TNode* thisNode, const int level) const
 // Public Interface.
 void objPosBST::printTreeLevel() const
 {
-    // Interface to the Recursive Version of Level-Order Tree-Printing Algorithm 
+    // Interface to the Recursive Version of Level-Order Tree-Printing Algorithm
 
     // 1. Get the height of the tree
     // 2. For each level (bounded by height), invoke the recursive tree-printing algorithm.
@@ -127,7 +132,7 @@ void objPosBST::printTreeLevel() const
     // (you will be asked to demo this feature during the lab demo!!)
 }
 
-bool objPosBST::isInTree(const objPos& thisPos, const TNode* thisNode) const
+bool objPosBST::isInTree(const objPos &thisPos, const TNode *thisNode) const
 {
     // Check if thisPos in in the tree.
     //  Remember, tree nodes are inserted using the Prefix member of objPos
@@ -147,14 +152,14 @@ bool objPosBST::isInTree(const objPos &thisPos) const
 }
 
 // insert OR update!!
-void objPosBST::insert(const objPos &thisPos, TNode* &thisNode)
+void objPosBST::insert(const objPos &thisPos, TNode *&thisNode)
 {
     // Insert objPos as a Node into the BST
 
     // Check Lecture Notes for general implementation
     //  Hint: Algorithm similar to isInTree.
 
-    // Modification: 
+    // Modification:
     //   If the node is already in the tree (i.e. Prefix match found)
     //   Add the number member of thisPos to the number member of the objPos data at the node
     //   (DO NOT JUST IGNORE.  ADD NUMBERS!!)
@@ -166,20 +171,18 @@ void objPosBST::insert(const objPos &thisPos)
     insert(thisPos, root); // recursive call on the private helper function
 }
 
-
-const TNode* objPosBST::findMin(const TNode* thisNode) const
+const TNode *objPosBST::findMin(const TNode *thisNode) const
 {
-	// Find the node with the smallest prefix in the subtree from thisNode
+    // Find the node with the smallest prefix in the subtree from thisNode
 
     // Used as part of remove() algorithm
 
     // Check Lecture Notes for implementation
 }
 
-
-void objPosBST::remove(const objPos &thisPos, TNode* &thisNode)
+void objPosBST::remove(const objPos &thisPos, TNode *&thisNode)
 {
-	// Remove the node with matching prefix of thisPos from the subtree thisNode
+    // Remove the node with matching prefix of thisPos from the subtree thisNode
 
     // *IMPORTANT* Check Lecture Notes for general implementation
     //  Remember the three removal case scenarios
@@ -196,7 +199,7 @@ void objPosBST::remove(const objPos &thisPos)
     remove(thisPos, root); // recursive call on the private helper function
 }
 
-bool objPosBST::findGreater(const int numThreshold, const TNode* thisNode) const
+bool objPosBST::findGreater(const int numThreshold, const TNode *thisNode) const
 {
     // Determine whether any nodes in the tree has the NUMBER field of objPos data member greater than numThreshold
 
