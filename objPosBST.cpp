@@ -223,10 +223,18 @@ void objPosBST::insert(const objPos &thisPos)
 const TNode *objPosBST::findMin(const TNode *thisNode) const
 {
     // Find the node with the smallest prefix in the subtree from thisNode
+    if (thisNode == nullptr)
+    {
+        return nullptr;
+    }
 
     // Used as part of remove() algorithm
+    while (thisNode->left != nullptr)
+    {
+        thisNode = thisNode->left;
+    }
 
-    // Check Lecture Notes for implementation
+    return thisNode; // return the node with the smallest prefix
 }
 
 void objPosBST::remove(const objPos &thisPos, TNode *&thisNode)
