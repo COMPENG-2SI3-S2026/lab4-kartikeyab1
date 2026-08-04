@@ -157,7 +157,13 @@ void objPosBST::printTreeLevel() const
     // Interface to the Recursive Version of Level-Order Tree-Printing Algorithm
 
     // 1. Get the height of the tree
+    int height = getHeight(root);
     // 2. For each level (bounded by height), invoke the recursive tree-printing algorithm.
+    for (int level = 1; level <= height; ++level)
+    {
+        printCurrentLevel(root, level);
+        cout << endl; // Print a new line after each level for better readability
+    }
 
     // You may add other character formatting features to make the tree more readable.
     // (you will be asked to demo this feature during the lab demo!!)
